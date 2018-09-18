@@ -1,0 +1,36 @@
+server:
+  port: 8080
+  address: 0.0.0.0
+
+spring:
+  profiles:
+    active: dev
+  datasource:
+    name: book_online
+    url: jdbc:mysql://catheart.net:3306/CAT
+    username: cat
+    password: cat
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+  mvc:
+    view:
+      prefix: classpath:/templates/jsp/
+      suffix: .jsp
+mybatis:
+  mapper-locations: classpath:mapping/*.xml  #注意：一定要对应mapper映射xml文件的所在路径
+  type-aliases-package: com.book_line.demo.model  # 注意：对应实体类的路径
+
+mapper:
+  mappers:
+  - com.book_online.demo.mapper
+  not-empty: false
+  identity: MYSQL
+
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+
+

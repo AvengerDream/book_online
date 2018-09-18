@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.book_online.demo.mapper.CommentMapper" >
+  <resultMap id="BaseResultMap" type="com.book_online.demo.model.Comment" >
+    <id column="CommentId" property="commentid" jdbcType="INTEGER" />
+    <result column="BookId" property="bookid" jdbcType="INTEGER" />
+    <result column="CustomerId" property="customerid" jdbcType="INTEGER" />
+    <result column="Customername" property="customername" jdbcType="VARCHAR" />
+    <result column="commentdate" property="commentdate" jdbcType="TIMESTAMP" />
+    <result column="Commentcontent" property="commentcontent" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    CommentId, BookId, CustomerId, Customername, commentdate, Commentcontent
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.book_online.demo.model.CommentExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_comment
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_comment
+    where CommentId = #{commentid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_comment
+    where CommentId = #{commentid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.book_online.demo.model.CommentExample" >
+    delete from tb_comment
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.book_online.demo.model.Comment" >
+    insert into tb_comment (CommentId, BookId, CustomerId, 
+      Customername, commentdate, Commentcontent
+      )
+    values (#{commentid,jdbcType=INTEGER}, #{bookid,jdbcType=INTEGER}, #{customerid,jdbcType=INTEGER}, 
+      #{customername,jdbcType=VARCHAR}, #{commentdate,jdbcType=TIMESTAMP}, #{commentcontent,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.book_online.demo.model.Comment" >
+    insert into tb_comment
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="commentid != null" >
+        CommentId,
+      </if>
+      <if test="bookid != null" >
+        BookId,
+      </if>
+      <if test="customerid != null" >
+        CustomerId,
+      </if>
+      <if test="customername != null" >
+        Customername,
+      </if>
+      <if test="commentdate != null" >
+        commentdate,
+      </if>
+      <if test="commentcontent != null" >
+        Commentcontent,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="commentid != null" >
+        #{commentid,jdbcType=INTEGER},
+      </if>
+      <if test="bookid != null" >
+        #{bookid,jdbcType=INTEGER},
+      </if>
+      <if test="customerid != null" >
+        #{customerid,jdbcType=INTEGER},
+      </if>
+      <if test="customername != null" >
+        #{customername,jdbcType=VARCHAR},
+      </if>
+      <if test="commentdate != null" >
+        #{commentdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="commentcontent != null" >
+        #{commentcontent,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_comment
+    <set >
+      <if test="record.commentid != null" >
+        CommentId = #{record.commentid,jdbcType=INTEGER},
+      </if>
+      <if test="record.bookid != null" >
+        BookId = #{record.bookid,jdbcType=INTEGER},
+      </if>
+      <if test="record.customerid != null" >
+        CustomerId = #{record.customerid,jdbcType=INTEGER},
+      </if>
+      <if test="record.customername != null" >
+        Customername = #{record.customername,jdbcType=VARCHAR},
+      </if>
+      <if test="record.commentdate != null" >
+        commentdate = #{record.commentdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.commentcontent != null" >
+        Commentcontent = #{record.commentcontent,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_comment
+    set CommentId = #{record.commentid,jdbcType=INTEGER},
+      BookId = #{record.bookid,jdbcType=INTEGER},
+      CustomerId = #{record.customerid,jdbcType=INTEGER},
+      Customername = #{record.customername,jdbcType=VARCHAR},
+      commentdate = #{record.commentdate,jdbcType=TIMESTAMP},
+      Commentcontent = #{record.commentcontent,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.book_online.demo.model.Comment" >
+    update tb_comment
+    <set >
+      <if test="bookid != null" >
+        BookId = #{bookid,jdbcType=INTEGER},
+      </if>
+      <if test="customerid != null" >
+        CustomerId = #{customerid,jdbcType=INTEGER},
+      </if>
+      <if test="customername != null" >
+        Customername = #{customername,jdbcType=VARCHAR},
+      </if>
+      <if test="commentdate != null" >
+        commentdate = #{commentdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="commentcontent != null" >
+        Commentcontent = #{commentcontent,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where CommentId = #{commentid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.book_online.demo.model.Comment" >
+    update tb_comment
+    set BookId = #{bookid,jdbcType=INTEGER},
+      CustomerId = #{customerid,jdbcType=INTEGER},
+      Customername = #{customername,jdbcType=VARCHAR},
+      commentdate = #{commentdate,jdbcType=TIMESTAMP},
+      Commentcontent = #{commentcontent,jdbcType=VARCHAR}
+    where CommentId = #{commentid,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>个人中心</title>
+    <style type="text/css">
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        #left{
+            width:20%;
+            height: 1080px;
+            background: #2aabd2;
+            float: left;
+        }
+        #right{
+            width:80%;
+            height: 1080px;
+            background: #5cafde;
+            float: right;
+        }
+        a{
+            text-decoration-line: none;
+        }
+        ul{
+            list-style-type: disc;
+        }
+        ul div{
+            line-height: 40px;
+            text-align: left;
+            font-size: 20px;
+        }
+        #left-ul{
+            height:100%;
+        }
+    </style>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script type="text/javascript" src="js/jquery-1.11.0.js"></script>
+</head>
+<body>
+<div>
+    <header  th:text="${customername}"></header>
+    <div id="left">
+        <div id="left-ul">
+            <ul>
+                <li><div><a id="updateinfo">修改信息</a></div></li>
+                <li><div><a id="findorder">查看账单</a></div></li>
+            </ul>
+        </div>
+    </div>
+    <div id="right">
+            <div id="right-content" style="text-align: center">
+                <div id="showcustomerinfo" style="width: 700px;height: 700px;display: block">
+                    <b>用户名:</b><p th:text="${customername}"></p>
+                    <b>真实姓名:</b><p th:text="${customertruename}"></p>
+                    <b>性别:</b><p th:text="${customersex}"></p>
+                    <b>手机号:</b><p th:text="${customertel}"></p>
+                    <b>邮箱:</b><p th:text="${customeremail}"></p>
+                    <b>收件地址:</b><p th:text="${customeraddr}"></p>
+                    <b>注册时间:</b><p th:text="${customeregtime}"></p>
+                    <b>上次登录时间:</b><p th:text="${customerlastlogin}"></p>
+                </div>
+                <div id="updatecustomerinfo" class="form-group" style="width: 600px;height: 600px;display: none;line-height: 30px;text-align: center">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label for="update-tel" class="col-sm-2 control-label">手机号</label>
+                            <div class="col-sm-10">
+                                <input type="tel" class="form-control" id="update-tel">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="update-email" class="col-sm-2 control-label">邮箱</label>
+                            <div class="col-sm-10">
+                                <input id="update-email" type="email" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="update-addr" class="col-sm-2 control-label">收件地址</label>
+                            <div class="col-sm-10">
+                                <input type="text" id="update-addr" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="update-ques" class="col-sm-2 control-label">密保问题</label>
+                            <div class="col-sm-10">
+                                <input type="text" id="update-ques" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="update-answer" class="col-sm-2 control-label">密保答案</label>
+                            <div class="col-sm-10">
+                                <input type="text" id="update-answer" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button id="updatainfo-btn" class="btn btn-success">确认修改</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div id="showorder" style="width: 800px;height: 800px;font-size: 20px;line-height: 30px;"></div>
+            </div>
+    </div>
+</div>
+<script>
+    $("#updateinfo").click(function () {
+        $("#updatecustomerinfo").css("display","block");
+        $("#updatecustomerinfo").siblings().css("display","none");
+        $.ajax({
+            url:"/updateinfo",
+            type:"POST",
+            data:{
+                "tel":$("#update-tel").val(),"email":$("#update-email").val(),
+                "addr":$("#update-addr").val(),"ques":$("#update-ques").val(),
+                "answer":$("#update-answer").val(),"name":$(header).text()
+            },
+            success:function (data) {
+                alert(data);
+            }
+
+        });
+    });
+    $("#findorder").click(function () {
+
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.book_online.demo.mapper.CustomerInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.book_online.demo.model.CustomerInfo" >
+    <id column="CustomerId" property="customerid" jdbcType="INTEGER" />
+    <id column="CustomerName" property="customername" jdbcType="VARCHAR" />
+    <result column="CustomerPwd" property="customerpwd" jdbcType="VARCHAR" />
+    <result column="Customertruename" property="customertruename" jdbcType="VARCHAR" />
+    <result column="CustomerSex" property="customersex" jdbcType="VARCHAR" />
+    <result column="CustomerTel" property="customertel" jdbcType="VARCHAR" />
+    <result column="CustomerEmail" property="customeremail" jdbcType="VARCHAR" />
+    <result column="CustomerAddr" property="customeraddr" jdbcType="VARCHAR" />
+    <result column="CustomerRegTime" property="customerregtime" jdbcType="TIMESTAMP" />
+    <result column="CustomerQues" property="customerques" jdbcType="VARCHAR" />
+    <result column="CustomerAnswer" property="customeranswer" jdbcType="VARCHAR" />
+    <result column="CustomerLogTime" property="customerlogtime" jdbcType="INTEGER" />
+    <result column="CustomerLastLogT" property="customerlastlogt" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    CustomerId, CustomerName, CustomerPwd, Customertruename, CustomerSex, CustomerTel, 
+    CustomerEmail, CustomerAddr, CustomerRegTime, CustomerQues, CustomerAnswer, CustomerLogTime, 
+    CustomerLastLogT
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.book_online.demo.model.CustomerInfoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_customerinfo
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.book_online.demo.model.CustomerInfoKey" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_customerinfo
+    where CustomerId = #{customerid,jdbcType=INTEGER}
+      and CustomerName = #{customername,jdbcType=VARCHAR}
+  </select>
+  <select id="findLoginUser" parameterType="com.book_online.demo.model.CustomerLoginInfo" resultMap="BaseResultMap">
+    select * from tb_customerinfo
+    where CustomerPwd = #{customerPassword,jdbcType=VARCHAR}
+      and binary CustomerName = #{customerName,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByCustomerName" parameterType="java.lang.String" resultType="com.book_online.demo.model.CustomerInfo">
+    select * from tb_customerinfo where binary CustomerName=#{value}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.book_online.demo.model.CustomerInfoKey" >
+    delete from tb_customerinfo
+    where CustomerId = #{customerid,jdbcType=INTEGER}
+      and CustomerName = #{customername,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.book_online.demo.model.CustomerInfoExample" >
+    delete from tb_customerinfo
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <delete id="delCustomerInfo"  parameterType="java.lang.Integer">
+    delete from tb-customerinfo
+    where CustomerId=#{customerid}
+  </delete>
+  <insert id="insert" parameterType="com.book_online.demo.model.CustomerInfo" >
+    insert into tb_customerinfo (CustomerId, CustomerName, CustomerPwd, 
+      Customertruename, CustomerSex, CustomerTel, 
+      CustomerEmail, CustomerAddr, CustomerRegTime, 
+      CustomerQues, CustomerAnswer, CustomerLogTime, 
+      CustomerLastLogT)
+    values (#{customerid,jdbcType=INTEGER}, #{customername,jdbcType=VARCHAR}, #{customerpwd,jdbcType=VARCHAR}, 
+      #{customertruename,jdbcType=VARCHAR}, #{customersex,jdbcType=VARCHAR}, #{customertel,jdbcType=VARCHAR}, 
+      #{customeremail,jdbcType=VARCHAR}, #{customeraddr,jdbcType=VARCHAR}, #{customerregtime,jdbcType=TIMESTAMP}, 
+      #{customerques,jdbcType=VARCHAR}, #{customeranswer,jdbcType=VARCHAR}, #{customerlogtime,jdbcType=INTEGER}, 
+      #{customerlastlogt,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.book_online.demo.model.CustomerInfo" >
+    insert into tb_customerinfo
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="customerid != null" >
+        CustomerId,
+      </if>
+      <if test="customername != null" >
+        CustomerName,
+      </if>
+      <if test="customerpwd != null" >
+        CustomerPwd,
+      </if>
+      <if test="customertruename != null" >
+        Customertruename,
+      </if>
+      <if test="customersex != null" >
+        CustomerSex,
+      </if>
+      <if test="customertel != null" >
+        CustomerTel,
+      </if>
+      <if test="customeremail != null" >
+        CustomerEmail,
+      </if>
+      <if test="customeraddr != null" >
+        CustomerAddr,
+      </if>
+      <if test="customerregtime != null" >
+        CustomerRegTime,
+      </if>
+      <if test="customerques != null" >
+        CustomerQues,
+      </if>
+      <if test="customeranswer != null" >
+        CustomerAnswer,
+      </if>
+      <if test="customerlogtime != null" >
+        CustomerLogTime,
+      </if>
+      <if test="customerlastlogt != null" >
+        CustomerLastLogT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="customerid != null" >
+        #{customerid,jdbcType=INTEGER},
+      </if>
+      <if test="customername != null" >
+        #{customername,jdbcType=VARCHAR},
+      </if>
+      <if test="customerpwd != null" >
+        #{customerpwd,jdbcType=VARCHAR},
+      </if>
+      <if test="customertruename != null" >
+        #{customertruename,jdbcType=VARCHAR},
+      </if>
+      <if test="customersex != null" >
+        #{customersex,jdbcType=VARCHAR},
+      </if>
+      <if test="customertel != null" >
+        #{customertel,jdbcType=VARCHAR},
+      </if>
+      <if test="customeremail != null" >
+        #{customeremail,jdbcType=VARCHAR},
+      </if>
+      <if test="customeraddr != null" >
+        #{customeraddr,jdbcType=VARCHAR},
+      </if>
+      <if test="customerregtime != null" >
+        #{customerregtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="customerques != null" >
+        #{customerques,jdbcType=VARCHAR},
+      </if>
+      <if test="customeranswer != null" >
+        #{customeranswer,jdbcType=VARCHAR},
+      </if>
+      <if test="customerlogtime != null" >
+        #{customerlogtime,jdbcType=INTEGER},
+      </if>
+      <if test="customerlastlogt != null" >
+        #{customerlastlogt,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_customerinfo
+    <set >
+      <if test="record.customerid != null" >
+        CustomerId = #{record.customerid,jdbcType=INTEGER},
+      </if>
+      <if test="record.customername != null" >
+        CustomerName = #{record.customername,jdbcType=VARCHAR},
+      </if>
+      <if test="record.customerpwd != null" >
+        CustomerPwd = #{record.customerpwd,jdbcType=VARCHAR},
+      </if>
+      <if test="record.customertruename != null" >
+        Customertruename = #{record.customertruename,jdbcType=VARCHAR},
+      </if>
+      <if test="record.customersex != null" >
+        CustomerSex = #{record.customersex,jdbcType=VARCHAR},
+      </if>
+      <if test="record.customertel != null" >
+        CustomerTel = #{record.customertel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.customeremail != null" >
+        CustomerEmail = #{record.customeremail,jdbcType=VARCHAR},
+      </if>
+      <if test="record.customeraddr != null" >
+        CustomerAddr = #{record.customeraddr,jdbcType=VARCHAR},
+      </if>
+      <if test="record.customerregtime != null" >
+        CustomerRegTime = #{record.customerregtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.customerques != null" >
+        CustomerQues = #{record.customerques,jdbcType=VARCHAR},
+      </if>
+      <if test="record.customeranswer != null" >
+        CustomerAnswer = #{record.customeranswer,jdbcType=VARCHAR},
+      </if>
+      <if test="record.customerlogtime != null" >
+        CustomerLogTime = #{record.customerlogtime,jdbcType=INTEGER},
+      </if>
+      <if test="record.customerlastlogt != null" >
+        CustomerLastLogT = #{record.customerlastlogt,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_customerinfo
+    set CustomerId = #{record.customerid,jdbcType=INTEGER},
+      CustomerName = #{record.customername,jdbcType=VARCHAR},
+      CustomerPwd = #{record.customerpwd,jdbcType=VARCHAR},
+      Customertruename = #{record.customertruename,jdbcType=VARCHAR},
+      CustomerSex = #{record.customersex,jdbcType=VARCHAR},
+      CustomerTel = #{record.customertel,jdbcType=VARCHAR},
+      CustomerEmail = #{record.customeremail,jdbcType=VARCHAR},
+      CustomerAddr = #{record.customeraddr,jdbcType=VARCHAR},
+      CustomerRegTime = #{record.customerregtime,jdbcType=TIMESTAMP},
+      CustomerQues = #{record.customerques,jdbcType=VARCHAR},
+      CustomerAnswer = #{record.customeranswer,jdbcType=VARCHAR},
+      CustomerLogTime = #{record.customerlogtime,jdbcType=INTEGER},
+      CustomerLastLogT = #{record.customerlastlogt,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.book_online.demo.model.CustomerInfo" >
+    update tb_customerinfo
+    <set >
+      <if test="customerpwd != null" >
+        CustomerPwd = #{customerpwd,jdbcType=VARCHAR},
+      </if>
+      <if test="customertruename != null" >
+        Customertruename = #{customertruename,jdbcType=VARCHAR},
+      </if>
+      <if test="customersex != null" >
+        CustomerSex = #{customersex,jdbcType=VARCHAR},
+      </if>
+      <if test="customertel != null" >
+        CustomerTel = #{customertel,jdbcType=VARCHAR},
+      </if>
+      <if test="customeremail != null" >
+        CustomerEmail = #{customeremail,jdbcType=VARCHAR},
+      </if>
+      <if test="customeraddr != null" >
+        CustomerAddr = #{customeraddr,jdbcType=VARCHAR},
+      </if>
+      <if test="customerregtime != null" >
+        CustomerRegTime = #{customerregtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="customerques != null" >
+        CustomerQues = #{customerques,jdbcType=VARCHAR},
+      </if>
+      <if test="customeranswer != null" >
+        CustomerAnswer = #{customeranswer,jdbcType=VARCHAR},
+      </if>
+      <if test="customerlogtime != null" >
+        CustomerLogTime = #{customerlogtime,jdbcType=INTEGER},
+      </if>
+      <if test="customerlastlogt != null" >
+        CustomerLastLogT = #{customerlastlogt,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where CustomerId = #{customerid,jdbcType=INTEGER}
+      and CustomerName = #{customername,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.book_online.demo.model.CustomerInfo" >
+    update tb_customerinfo
+    set CustomerPwd = #{customerpwd,jdbcType=VARCHAR},
+      Customertruename = #{customertruename,jdbcType=VARCHAR},
+      CustomerSex = #{customersex,jdbcType=VARCHAR},
+      CustomerTel = #{customertel,jdbcType=VARCHAR},
+      CustomerEmail = #{customeremail,jdbcType=VARCHAR},
+      CustomerAddr = #{customeraddr,jdbcType=VARCHAR},
+      CustomerRegTime = #{customerregtime,jdbcType=TIMESTAMP},
+      CustomerQues = #{customerques,jdbcType=VARCHAR},
+      CustomerAnswer = #{customeranswer,jdbcType=VARCHAR},
+      CustomerLogTime = #{customerlogtime,jdbcType=INTEGER},
+      CustomerLastLogT = #{customerlastlogt,jdbcType=TIMESTAMP}
+    where CustomerId = #{customerid,jdbcType=INTEGER}
+      and CustomerName = #{customername,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.book_online.demo.mapper.OrderMapper" >
+  <resultMap id="BaseResultMap" type="com.book_online.demo.model.Order" >
+    <id column="Id" property="id" jdbcType="INTEGER" />
+    <result column="OrderID" property="orderid" jdbcType="VARCHAR" />
+    <result column="CustomerId" property="customerid" jdbcType="INTEGER" />
+    <result column="Orderdate" property="orderdate" jdbcType="TIMESTAMP" />
+    <result column="BookId" property="bookid" jdbcType="INTEGER" />
+    <result column="recevername" property="recevername" jdbcType="VARCHAR" />
+    <result column="receveraddr" property="receveraddr" jdbcType="VARCHAR" />
+    <result column="memo" property="memo" jdbcType="VARCHAR" />
+    <result column="totalprice" property="totalprice" jdbcType="DOUBLE" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    Id, OrderID, CustomerId, Orderdate, BookId, recevername, receveraddr, memo, totalprice
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.book_online.demo.model.OrderExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByCustomerId" parameterType="java.lang.Integer" resultType="com.book_online.demo.model.Order">
+    select * from tb_order where CustomerId=#{value}
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_order
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_order
+    where Id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.book_online.demo.model.OrderExample" >
+    delete from tb_order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.book_online.demo.model.Order" >
+    insert into tb_order (Id, OrderID, CustomerId, 
+      Orderdate, BookId, recevername, 
+      receveraddr, memo, totalprice
+      )
+    values (#{id,jdbcType=INTEGER}, #{orderid,jdbcType=VARCHAR}, #{customerid,jdbcType=INTEGER}, 
+      #{orderdate,jdbcType=TIMESTAMP}, #{bookid,jdbcType=INTEGER}, #{recevername,jdbcType=VARCHAR}, 
+      #{receveraddr,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR}, #{totalprice,jdbcType=DOUBLE}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.book_online.demo.model.Order" >
+    insert into tb_order
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        Id,
+      </if>
+      <if test="orderid != null" >
+        OrderID,
+      </if>
+      <if test="customerid != null" >
+        CustomerId,
+      </if>
+      <if test="orderdate != null" >
+        Orderdate,
+      </if>
+      <if test="bookid != null" >
+        BookId,
+      </if>
+      <if test="recevername != null" >
+        recevername,
+      </if>
+      <if test="receveraddr != null" >
+        receveraddr,
+      </if>
+      <if test="memo != null" >
+        memo,
+      </if>
+      <if test="totalprice != null" >
+        totalprice,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="orderid != null" >
+        #{orderid,jdbcType=VARCHAR},
+      </if>
+      <if test="customerid != null" >
+        #{customerid,jdbcType=INTEGER},
+      </if>
+      <if test="orderdate != null" >
+        #{orderdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bookid != null" >
+        #{bookid,jdbcType=INTEGER},
+      </if>
+      <if test="recevername != null" >
+        #{recevername,jdbcType=VARCHAR},
+      </if>
+      <if test="receveraddr != null" >
+        #{receveraddr,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="totalprice != null" >
+        #{totalprice,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_order
+    <set >
+      <if test="record.id != null" >
+        Id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.orderid != null" >
+        OrderID = #{record.orderid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.customerid != null" >
+        CustomerId = #{record.customerid,jdbcType=INTEGER},
+      </if>
+      <if test="record.orderdate != null" >
+        Orderdate = #{record.orderdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.bookid != null" >
+        BookId = #{record.bookid,jdbcType=INTEGER},
+      </if>
+      <if test="record.recevername != null" >
+        recevername = #{record.recevername,jdbcType=VARCHAR},
+      </if>
+      <if test="record.receveraddr != null" >
+        receveraddr = #{record.receveraddr,jdbcType=VARCHAR},
+      </if>
+      <if test="record.memo != null" >
+        memo = #{record.memo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.totalprice != null" >
+        totalprice = #{record.totalprice,jdbcType=DOUBLE},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_order
+    set Id = #{record.id,jdbcType=INTEGER},
+      OrderID = #{record.orderid,jdbcType=VARCHAR},
+      CustomerId = #{record.customerid,jdbcType=INTEGER},
+      Orderdate = #{record.orderdate,jdbcType=TIMESTAMP},
+      BookId = #{record.bookid,jdbcType=INTEGER},
+      recevername = #{record.recevername,jdbcType=VARCHAR},
+      receveraddr = #{record.receveraddr,jdbcType=VARCHAR},
+      memo = #{record.memo,jdbcType=VARCHAR},
+      totalprice = #{record.totalprice,jdbcType=DOUBLE}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.book_online.demo.model.Order" >
+    update tb_order
+    <set >
+      <if test="orderid != null" >
+        OrderID = #{orderid,jdbcType=VARCHAR},
+      </if>
+      <if test="customerid != null" >
+        CustomerId = #{customerid,jdbcType=INTEGER},
+      </if>
+      <if test="orderdate != null" >
+        Orderdate = #{orderdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bookid != null" >
+        BookId = #{bookid,jdbcType=INTEGER},
+      </if>
+      <if test="recevername != null" >
+        recevername = #{recevername,jdbcType=VARCHAR},
+      </if>
+      <if test="receveraddr != null" >
+        receveraddr = #{receveraddr,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null" >
+        memo = #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="totalprice != null" >
+        totalprice = #{totalprice,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.book_online.demo.model.Order" >
+    update tb_order
+    set OrderID = #{orderid,jdbcType=VARCHAR},
+      CustomerId = #{customerid,jdbcType=INTEGER},
+      Orderdate = #{orderdate,jdbcType=TIMESTAMP},
+      BookId = #{bookid,jdbcType=INTEGER},
+      recevername = #{recevername,jdbcType=VARCHAR},
+      receveraddr = #{receveraddr,jdbcType=VARCHAR},
+      memo = #{memo,jdbcType=VARCHAR},
+      totalprice = #{totalprice,jdbcType=DOUBLE}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

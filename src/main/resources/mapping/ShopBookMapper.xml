@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.book_online.demo.mapper.ShopBookMapper" >
+  <resultMap id="BaseResultMap" type="com.book_online.demo.model.ShopBook" >
+    <id column="CustomerId" property="customerid" jdbcType="INTEGER" />
+    <id column="BookId" property="bookid" jdbcType="INTEGER" />
+    <result column="ordermount" property="ordermount" jdbcType="INTEGER" />
+    <result column="price" property="price" jdbcType="DOUBLE" />
+    <result column="ispay" property="ispay" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    CustomerId, BookId, ordermount, price, ispay
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.book_online.demo.model.ShopBookExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_shopbook
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.book_online.demo.model.ShopBookKey" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_shopbook
+    where CustomerId = #{customerid,jdbcType=INTEGER}
+      and BookId = #{bookid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.book_online.demo.model.ShopBookKey" >
+    delete from tb_shopbook
+    where CustomerId = #{customerid,jdbcType=INTEGER}
+      and BookId = #{bookid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.book_online.demo.model.ShopBookExample" >
+    delete from tb_shopbook
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.book_online.demo.model.ShopBook" >
+    insert into tb_shopbook (CustomerId, BookId, ordermount, 
+      price, ispay)
+    values (#{customerid,jdbcType=INTEGER}, #{bookid,jdbcType=INTEGER}, #{ordermount,jdbcType=INTEGER}, 
+      #{price,jdbcType=DOUBLE}, #{ispay,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.book_online.demo.model.ShopBook" >
+    insert into tb_shopbook
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="customerid != null" >
+        CustomerId,
+      </if>
+      <if test="bookid != null" >
+        BookId,
+      </if>
+      <if test="ordermount != null" >
+        ordermount,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="ispay != null" >
+        ispay,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="customerid != null" >
+        #{customerid,jdbcType=INTEGER},
+      </if>
+      <if test="bookid != null" >
+        #{bookid,jdbcType=INTEGER},
+      </if>
+      <if test="ordermount != null" >
+        #{ordermount,jdbcType=INTEGER},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DOUBLE},
+      </if>
+      <if test="ispay != null" >
+        #{ispay,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_shopbook
+    <set >
+      <if test="record.customerid != null" >
+        CustomerId = #{record.customerid,jdbcType=INTEGER},
+      </if>
+      <if test="record.bookid != null" >
+        BookId = #{record.bookid,jdbcType=INTEGER},
+      </if>
+      <if test="record.ordermount != null" >
+        ordermount = #{record.ordermount,jdbcType=INTEGER},
+      </if>
+      <if test="record.price != null" >
+        price = #{record.price,jdbcType=DOUBLE},
+      </if>
+      <if test="record.ispay != null" >
+        ispay = #{record.ispay,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_shopbook
+    set CustomerId = #{record.customerid,jdbcType=INTEGER},
+      BookId = #{record.bookid,jdbcType=INTEGER},
+      ordermount = #{record.ordermount,jdbcType=INTEGER},
+      price = #{record.price,jdbcType=DOUBLE},
+      ispay = #{record.ispay,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.book_online.demo.model.ShopBook" >
+    update tb_shopbook
+    <set >
+      <if test="ordermount != null" >
+        ordermount = #{ordermount,jdbcType=INTEGER},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DOUBLE},
+      </if>
+      <if test="ispay != null" >
+        ispay = #{ispay,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where CustomerId = #{customerid,jdbcType=INTEGER}
+      and BookId = #{bookid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.book_online.demo.model.ShopBook" >
+    update tb_shopbook
+    set ordermount = #{ordermount,jdbcType=INTEGER},
+      price = #{price,jdbcType=DOUBLE},
+      ispay = #{ispay,jdbcType=VARCHAR}
+    where CustomerId = #{customerid,jdbcType=INTEGER}
+      and BookId = #{bookid,jdbcType=INTEGER}
+  </update>
+</mapper>

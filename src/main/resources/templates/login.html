@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <script  src="js/jquery-3.3.1.js"></script>
+
+    <script>
+        function test(event) {
+            event = event ? event : window.event;
+            var obj = event.srcElement ? event.srcElement : event.target;
+
+            var $obj = $(obj);
+            alert($obj.val());
+
+        }
+    </script>
+</head>
+<body>
+<h1>欢迎登陆</h1>
+<form id="logininfo">
+   用户名： <input name="username" id="username" type="text" onblur="test()" ><br>
+    密码：<input name="password" id="password" type="password"><br>
+    <button type="button" >登录</button><button type="button" >注册</button>
+    <br><button type="button" >找回密码</button>
+
+</form>
+</body>
+</html>

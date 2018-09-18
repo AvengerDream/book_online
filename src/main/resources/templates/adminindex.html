@@ -1,0 +1,634 @@
+<!doctype html>
+<!--[if IE 9]>
+<html class="no-js lt-ie10" lang="en" xmlns:th="http://www.thymeleaf.org"> <![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <title>一个书城后台管理系统</title>
+        <meta name="description" content="网站描述">
+        <meta name="robots" content="noindex, nofollow">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/font-awesome.min.css">
+        <link rel="stylesheet" href="css/main.css">
+        <style type="text/css">
+            .menu-li{
+                cursor: pointer;
+            }
+            table th,td{
+                width: 100px;
+                height: 20px;
+            }
+ta        </style>
+    </head>
+    <body>
+        <div id="page-wrapper" class="page-loading">
+            <div class="preloader">
+                <div class="inner">
+                    <div class="preloader-spinner themed-background hidden-lt-ie10"></div>
+                    <h3 class="text-primary visible-lt-ie10"><strong>Loading..</strong></h3>
+                </div>
+            </div>
+            <div id="page-container" class="header-fixed-top sidebar-visible-lg-full">
+                <div id="sidebar">
+                    <div id="sidebar-brand" class="themed-background">
+                        <a href="#" class="sidebar-title">
+                            <i class="icon-cog"></i> 
+                            <span class="sidebar-nav-mini-hide">一个书城<small>(low bi的书城)</small></span>
+                        </a>
+                    </div>
+                    <div id="sidebar-scroll">
+                        <div class="sidebar-content">
+                            <ul class="sidebar-nav">
+                                <li>
+                                    <a href=""><i class="icon-home sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">首页</span></a>
+                                </li>
+                                <li>
+                                    <a href="#" class="sidebar-nav-menu"><i class="icon-chevron-right sidebar-nav-indicator sidebar-nav-mini-hide"></i><i class="icon-book sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">管理书籍</span></a>
+                                    <ul>
+                                        <li >
+                                            <a id="findbook-li" class="menu-li" onclick="li_click()">查询书籍</a>
+                                        </li>
+                                        <li>
+                                            <a id="addbook-li" class="menu-li" onclick="li_click()">添加书籍</a>
+                                        </li>
+                                        <li>
+                                            <a id="delbook-li" class="menu-li" onclick="li_click()">删除书籍</a>
+                                        </li>
+                                        <li>
+                                            <a id="updatebook-li" class="menu-li" onclick="li_click()">变更书籍信息</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="#" class="sidebar-nav-menu"><i class="icon-chevron-right sidebar-nav-indicator sidebar-nav-mini-hide"></i><i class="icon-sort-by-order sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">订单管理</span></a>
+                                    <ul>
+                                        <li>
+                                            <a id="findorder-li" class="menu-li" onclick="li_click()">查询订单</a>
+                                        </li>
+                                        <li>
+                                            <a id="delorder-li" class="menu-li" onclick="li_click()">删除订单</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="#" class="sidebar-nav-menu"><i class="icon-chevron-right sidebar-nav-indicator sidebar-nav-mini-hide"></i><i class="icon-user sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">账户管理</span></a>
+                                    <ul>
+                                        <li>
+                                            <a href="#" class="sidebar-nav-submenu"><i class="icon-chevron-right sidebar-nav-indicator"></i>普通账户</a>
+                                            <ul>
+                                                <li>
+                                                    <a id="delcustomerinfo-li" class="menu-li" onclick="li_click()">删除账户</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="sidebar-nav-submenu"><i class="icon-chevron-right sidebar-nav-indicator"></i>管理员账户</a>
+                                            <ul>
+                                                <li>
+                                                    <a id="addmanager-li" class="menu-li" onclick="li_click()">添加管理员账户</a>
+                                                </li>
+                                                <li>
+                                                    <a id="updatemanager-li" class="menu-li" onclick="li_click()">修改管理员账户</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <!-- END Sidebar Navigation -->
+                        </div>
+                    </div>
+                </div>
+                <div id="main-container">
+                    <header class="navbar navbar-inverse navbar-fixed-top">
+                        <ul class="nav navbar-nav-custom">
+                            <li>
+                                <a href="javascript:void(0)" onclick="Tool.sidebar('toggle-sidebar');this.blur();">
+                                    <i class="icon-reorder animation-fadeInRight" id="sidebar-toggle-mini"></i>
+                                    <i class="icon-reorder animation-fadeInRight" id="sidebar-toggle-full"></i>
+                                </a>
+                            </li>
+                        </ul>
+                        <ul class="nav navbar-nav-custom pull-right">
+                            <li class="dropdown">
+                                <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">
+                                    <img src="http://www.qq22.com.cn/uploads/allimg/c161220/14R1CC3H20-JW0.jpg" style="width: 60px;height: 60px" alt="avatar">
+                                    <span th:text="${adminname}"></span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-right">
+                                    <li>
+                                        <a href="#">
+                                            <i class="icon-pencil fa-fw pull-right"></i>
+                                            个人资料
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="icon-off fa-fw pull-right"></i>
+                                            退出
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </header>
+                    <div id="page-content" style="text-align: center">
+                        <div id="showresult" style="display: none;width: 1000px;height: 750px;margin: 0 auto 0;"></div>
+                        <!--查询书籍div-->
+                        <div id="findbook" style="display: none;width: 1000px;height: 750px;margin: 0 auto 0 300px;">
+                            <div style="width: 500px;height: 600px">
+                                <form class="form-horizontal" id="findbook-form"  style="text-align: center">
+                                    <div class="form-group">
+                                        <label for="find-bookTypeId" class="col-sm-2 control-label">类型：</label>
+                                        <div class="col-sm-10">
+                                            <select class="form-control" id="find-bookTypeId" name="bookTypeId">
+                                                <option value="0" selected>全部</option>
+                                                <option value="1">教育</option>
+                                                <option value="2">小说</option>
+                                                <option value="3">文艺</option>
+                                                <option value="4">青春文学/动漫</option>
+                                                <option value="5">童书</option>
+                                                <option value="6">社科</option>
+                                                <option value="7">经管</option>
+                                                <option value="8">成功励志</option>
+                                                <option value="9">科技</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="find-bookName" class="col-sm-2 control-label">书名：</label>
+                                        <div class="col-sm-10">
+                                            <input class="form-control" type="text" name="bookName" id="find-bookName" placeholder="书名，支持模糊查询">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-offset-2 col-sm-10">
+                                            <button   id="find-book-btn" class="btn btn-success">查看</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <!--添加书籍div-->
+                        <div id="addbook" style="display: none;width: 1000px;height: 750px;margin: 0 auto 0 300px;">
+                            <div style="width: 500px;height: 600px">
+                                <form id="addbook-form" class="form-horizontal" style="text-align: center">
+                                    <div class="form-group">
+                                        <label for="add-bookTypeId" class="col-sm-2 control-label">类型：</label>
+                                        <div class="col-sm-10">
+                                            <select id="add-bookTypeId" name="bookTypeId" class="form-control">
+                                                <option value="1" selected>教育</option>
+                                                <option value="2">小说</option>
+                                                <option value="3">文艺</option>
+                                                <option value="4">青春文学/动漫</option>
+                                                <option value="5">童书</option>
+                                                <option value="6">社科</option>
+                                                <option value="7">经管</option>
+                                                <option value="8">成功励志</option>
+                                                <option value="9">科技</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="add-bookname" class="col-sm-2 control-label">书名</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="add-bookname" name="bookName">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="add-bookpress" class="col-sm-2 control-label">出版社</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" id="add-bookpress" class="form-control" name="bookPress" >
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="add-bookpubdate" class="col-sm-2 control-label">出版时间</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="add-bookpubdate" name="bookPubDate">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="add-bookauthor" class="col-sm-2 control-label">作者</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="add-bookauthor" name="bookAuthor">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="add-bookprice" class="col-sm-2 control-label">定价</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="add-bookprice" name="bookPrice">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="add-bookpages" class="col-sm-2 control-label">页数</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="add-bookpages" name="bookPages">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="add-bookoutline" class="col-sm-2 control-label">图书简介</label>
+                                        <div class="col-sm-10">
+                                            <textarea id="add-bookoutline" class="form-control" cols="40" rows="5" name="bookOutline"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="add-bookpic" class="col-sm-2 control-label">图片</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="add-bookpic">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="add-bookstoremount" class="col-sm-2 control-label">库存</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="add-bookstoremount">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="add-bookstoretime" class="col-sm-2 control-label">入库时间</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="add-bookstoretime">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-offset-2 col-sm-10">
+                                            <button id="add-book-btn" class="btn btn-info">添加</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <!--删除书籍div-->
+                        <div id="delbook" style="display: none;width: 1000px;height: 750px;margin: 0 auto 0 300px;">
+                            <div style="width: 500px;height: 600px">
+                                <form id="delbook-form" class="form-horizontal" style="text-align: center;">
+                                    <div class="form-group">
+                                        <label for="del-bookid" class="col-sm-2 control-label">图书编号</label>
+                                        <div class="col-sm-10">
+                                            <input id="del-bookid" type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-offset-2 col-sm-10">
+                                            <button id="del-book-btn" class="btn btn-danger">删除</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <!--修改书籍div-->
+                        <div id="updatebook" style="display: none;width: 1000px;height: 750px;margin: 0 auto 0 300px;">
+                            <div style="width: 500px;height: 600px">
+                                <form id="updatebook-form"class="form-horizontal" style="text-align: center">
+                                    <div class="form-group">
+                                        <label for="update-bookid" class="col-sm-2 control-label">图书编号</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="update-bookid">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="update-bookstoremount" class="col-sm-2 control-label">库存</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="update-bookstoremount">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="update-bookstoretime" class="col-sm-2 control-label">入库时间</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" id="update-bookstoretime" class="form-control" placeholder="2017-09-01 14:25:09">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-offset-2 col-sm-10">
+                                            <button id="update-book-btn" class="btn btn-primary">更新</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <!--查询订单div-->
+                        <div id="findorder" style="display: none;width: 1000px;height: 750px;margin: 0 auto 0 300px;">
+                            <div style="width: 500px;height: 600px">
+                                <form id="findorder-form" class="form-horizontal" style="text-align: center">
+                                    <div class="form-group">
+                                        <label for="find-orderid" class="col-sm-2 control-label">订单编号</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" id="find-orderid" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-offset-2 col-sm-10">
+                                            <button id="find-order-btn" class="btn btn-success">查询</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <!--删除订单div-->
+                        <div id="delorder" style="display: none;width: 1000px;height: 750px;margin: 0 auto 0 300px;">
+                            <div style="width: 500px;height: 600px">
+                                <form id="delorder-form" class="form-horizontal" style="text-align: center">
+                                    <div class="form-group">
+                                        <label for="del-order-orderid" class="col-sm-2 control-label">订单编号</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" id="del-order-orderid" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-offset-2 col-sm-10">
+                                            <button id="del-order-btn" class="btn btn-danger">删除</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <!--删除账户div-->
+                        <div id="delcustomerinfo" style="display: none;width: 1000px;height: 750px;margin: 0 auto 0 300px;">
+                            <div style="width: 500px;height: 600px">
+                                <form id="delcustomerinfo-form" class="form-horizontal" style="text-align: center">
+                                    <div class="form-group">
+                                        <label for="del-customerinfoid" class="col-sm-2 control-label">用户ID</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" id="del-customerinfoid" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-offset-2 col-sm-10">
+                                            <button id="del-customerinfo-btn" class="btn btn-danger">删除</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <!--添加管理员账户-->
+                        <div id="addmanager" style="display: none;width: 1000px;height: 750px;margin: 0 auto 0 300px;">
+                            <div style="width: 500px;height: 600px;">
+                                <form id="addmanager-form" class="form-horizontal" style="text-align: center">
+                                    <div class="form-group">
+                                        <label for="add-managername" class="col-sm-2 control-label">管理员账户</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" id="add-managername" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="add-managerpassword" class="col-sm-2 control-label">管理员密码</label>
+                                        <div class="col-sm-10">
+                                            <input type="password" id="add-managerpassword" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-offset-2 col-sm-10">
+                                            <button id="add-manager-btn" class="btn btn-info">添加</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <!--修改管理员密码div-->
+                        <div id="updatemanager" style="display: none;width: 1000px;height: 750px;margin: 0 auto 0 300px;">
+                            <div style="width: 500px;height: 600px">
+                                <form id="updatemanager-form"   class="form-horizontal" style="text-align: center">
+                                    <div class="form-group">
+                                        <label for="update-managername" class="col-sm-2 control-label">用户名</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" id="update-managername" class="form-control">
+                                        </div>
+                                    </div>
+                                        <div class="form-group">
+                                        <label for="update-managerpassword" class="col-sm-2 control-label">新密码</label>
+                                        <div class="col-sm-10">
+                                            <input type="password" id="update-managerpassword" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="update-managerpassword-again" class="col-sm-2 control-label">确认密码</label>
+                                        <div class="col-sm-10">
+                                            <input type="password" id="update-managerpassword-again" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-offset-2 col-sm-10">
+                                            <button id="update-manager-btn" class="btn btn-primary">修改</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <script src="js/vendor/jquery-2.2.4.min.js"></script>
+        <script src="js/vendor/bootstrap.min.js"></script>
+        <script src="js/plugins.js"></script>
+        <script src="js/tool.js"></script>
+        <script data-name="back-manager">
+            function li_click(event) {
+                event = event ? event : window.event;
+                var $a = event.target;
+                var id=$a.id.split("-")[0];
+                $("#showresult").html("");
+                $("#"+id).css("display","block");
+                $("#"+id).siblings().css("display","none");
+            }
+            $("#find-book-btn").click(function () {
+                event.preventDefault();
+                var booktypeid = $("#find-bookTypeId").val();
+                var bookname=$("#find-bookName").val();
+                $.ajax({
+                    url:'/admin/findbook',
+                    type:"GET",
+                    data:{"bookTypeId":booktypeid,"bookName":bookname},
+                    success:function (data) {
+                        console.log(data.list);
+                        var $table=$("<table class='showresult-table table table-striped'>\n" +
+                            "  <caption>结果列表</caption>\n" +
+                            "  <tr>\n" +
+                            "    <th>书编号</th>\n" +
+                            "    <th>书名</th>\n" +
+                            "    <th>书籍类型</th>\n" +
+                            "    <th>出版社</th>\n" +
+                            "    <th>出版日期</th>\n" +
+                            "    <th>页数</th>\n" +
+                            "    <th>销量</th>\n" +
+                            "    <th>库存</th>\n" +
+                            "    <th>入库时间</th>\n" +
+                            "  </tr></table>\n"
+                            );
+                        $("#showresult").append($table);
+                        $.each(data.list,function (index,value) {
+                            var $tr = $("<tr>" +
+                                "<td>"+value.bookid+"</td>"+
+                                "<td>"+value.bookname+"</td>"+
+                                "<td>"+value.booktypeid+"</td>"+
+                                "<td>"+value.bookpress+"</td>"+
+                                "<td>"+value.bookpubdate+"</td>"+
+                                "<td>"+value.bookpages+"</td>"+
+                                "<td>"+value.bookdealmount+"</td>"+
+                                "<td>"+value.bookstoremount+"</td>"+
+                                "<td>"+value.bookstoretime+"</td>"+
+                                "</tr>");
+                            $(".showresult-table").append($tr);
+                        });
+                        $("#showresult").css("display","block");
+                        $("#showresult").siblings().css("display","none");
+                    }
+                });
+            });
+            $("#add-book-btn").click(function () {
+                event.preventDefault();
+                var booktypeid = $("#add-bookTypeId").val();
+                console.log(booktypeid);
+                var bookname=$("#add-bookname").val();
+                console.log(bookname);
+                var bookpress=$("#add-bookpress").val();
+                console.log(bookpress);
+                var bookpubdate=$("#add-bookpubdate").val();
+                console.log(bookpubdate);
+                var bookauthor=$("#add-bookauthor").val();
+                console.log(bookauthor);
+                var bookprice=$("#add-bookprice").val();
+                console.log(bookprice);
+                var bookpages=$("#add-bookpages").val();
+                console.log(bookpages);
+                var bookoutline=$("#add-bookoutline").val();
+                console.log(bookoutline);
+                var bookpic=$("#add-bookpic").val();
+                console.log(bookpic);
+                var bookstoremount=$("#add-bookstoremount").val();
+                console.log(bookstoremount);
+                var bookstoretime=$("#add-bookstoretime").val();
+                console.log(bookstoretime);
+                $.ajax({
+                    url:"/admin/addbook",
+                    type:"POST",
+                    data:{
+                        "booktypeid":booktypeid,"bookname":bookname,"bookpress":bookpress,"bookpubdate":bookpubdate,
+                        "bookauthor":bookauthor,"bookprice":bookprice,"bookpages":bookpages,"bookoutline":bookoutline,
+                        "bookpic":bookpic,"bookstoremount":bookstoremount,"bookstoretime":bookstoretime
+                    },
+                    success:function (data) {
+                        alert(data);
+                    }
+                });
+            });
+            $("#del-book-btn").click(function () {
+                event.preventDefault();
+                var bookid = $("#del-bookid").val();
+                $.ajax({
+                    url:"/admin/delbook",
+                    data:{"bookid":bookid},
+                    type:"get",
+                    success:function (data) {
+                        alert(data);
+                    }
+
+                });
+            });
+            $("#update-book-btn").click(function () {
+                event.preventDefault();
+                var bookid=$("#update-bookid").val();
+                var bookstoremount = $("#update-bookstoremount").val();
+                var bookstoretime=$("#update-bookstoretime").val();
+                alert(bookid+""+bookstoremount+" "+bookstoretime);
+                $.ajax({
+                    url:"/admin/updatebook",
+                    type:"POST",
+                    data:{
+                        "bookid":bookid,"bookstoremount":bookstoremount,"bookstoretime":bookstoretime
+                    },
+                    success:function(data){
+                        alert(data);
+                    }
+                });
+            });
+            $("#find-order-btn").click(function () {
+                event.preventDefault();
+                var orderid = $("#find-orderid").val();
+                $.ajax({
+                    url:"/admin/findorder",
+                    type:"POST",
+                    data:{"orderid":orderid},
+                    success:function (data) {
+                        if(data.message=="error"){
+                            alert("订单不存在，请确认后输入");
+                        }
+                        else {
+                            $("#showresult").html("");
+                            var $div = $("<div style='text-align: center;width: 300px;height: 300px'>" +
+                                "<p>编号"+data.message.id+"</p>" +
+                                "<p>订单编号"+data.message.orderid+"</p>"+
+                                "<p>用户编号"+data.message.customerid+"</p>"+
+                                "<p>订单日期"+data.message.orderdate+"</p>"+
+                                "<p>书号"+data.message.bookid+"</p>"+
+                                "<p>收件人"+data.message.recevername+"</p>"+
+                                "<p>地址"+data.message.receveraddr+"</p>"+
+                                "<p>备注"+data.message.memo+"</p>"+
+                                "<p>总价"+data.message.totalprice+"</p>"+
+                                "</div>");
+                            $("#showresult").append($div);
+
+                        }
+                    }
+                });
+                $("#showresult").css("display","block");
+                $("#showresult").siblings().css("display","none");
+            });
+            $("#del-order-btn").click(function () {
+                event.preventDefault();
+                var orderid = $("#del-order-orderid").val();
+                $.ajax({
+                    url:"/admin/delorder",
+                    type:"POST",
+                    data:{"orderid":orderid},
+                    success:function (data) {
+                        alert(data);
+                    }
+                });
+            });
+            $("#del-customerinfo-btn").click(function () {
+                event.preventDefault();
+                var customerinfoid=$("#del-customerinfoid").val();
+                $.ajax({
+                    url:"/admin/delcustomer",
+                    type:"POST",
+                    data:{"customerid":customerinfoid},
+                    success:function (data) {
+                        alert(data);
+                    }
+                });
+            });
+            $("#add-manager-btn").click(function () {
+                event.preventDefault();
+                var adminname = $("#add-managername").val();
+                var adminpass = $("#add-managerpassword").val();
+                $.ajax({
+                    url:"/admin/addmanager",
+                    type:"POST",
+                    data:{"adminname":adminname,"adminpass":adminpass},
+                    success:function(data){
+                        alert(data);
+                    }
+                });
+            });
+            $("#update-manager-btn").click(function () {
+                event.preventDefault();
+                var adminname = $("#update-managername");
+                var adminpass = $("#update-managerpassword").val();
+                $.ajax({
+                    url:"/admin/updateadmin",
+                    type:"POST",
+                    data:{"adminpass":adminpass,"adminname":adminname},
+                    success:function (data) {
+                        alert(data);
+                    }
+                });
+            });
+        </script>
+
+    </body>
+</html>

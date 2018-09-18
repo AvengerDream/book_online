@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.book_online.demo.mapper.BookMapper" >
+  <resultMap id="BaseResultMap" type="com.book_online.demo.model.Book" >
+    <id column="BookId" property="bookid" jdbcType="INTEGER" />
+    <result column="BookTypeId" property="booktypeid" jdbcType="INTEGER" />
+    <result column="BookName" property="bookname" jdbcType="VARCHAR" />
+    <result column="BookPress" property="bookpress" jdbcType="VARCHAR" />
+    <result column="BookPubDate" property="bookpubdate" jdbcType="TIMESTAMP" />
+    <result column="BookAuthor" property="bookauthor" jdbcType="VARCHAR" />
+    <result column="BookPrice" property="bookprice" jdbcType="DOUBLE" />
+    <result column="BookPages" property="bookpages" jdbcType="INTEGER" />
+    <result column="BookOutline" property="bookoutline" jdbcType="VARCHAR" />
+    <result column="BookDealmount" property="bookdealmount" jdbcType="INTEGER" />
+    <result column="BookPic" property="bookpic" jdbcType="VARCHAR" />
+    <result column="BookStoremount" property="bookstoremount" jdbcType="INTEGER" />
+    <result column="BookStoretime" property="bookstoretime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    BookId, BookTypeId, BookName, BookPress, BookPubDate, BookAuthor, BookPrice, BookPages, 
+    BookOutline, BookDealmount, BookPic, BookStoremount, BookStoretime
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.book_online.demo.model.BookExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_bookinfo
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_bookinfo
+    where BookId = #{bookid,jdbcType=INTEGER}
+  </select>
+
+
+
+
+  <select id="findAllBook" resultType="com.book_online.demo.model.Book" parameterType="java.lang.Integer">
+    select * from tb_bookinfo
+    where 1=1
+    <if test="bookTypeId != 0">
+      and  bookTypeId=#{bookTypeId}
+    </if>
+  </select>
+  <select id="adminFindBook" resultType="com.book_online.demo.model.Book">
+    select * from tb_bookinfo
+    where 1=1 and BookName like "%"#{bookName}"%"
+    <if test="bookTypeId != 0">
+      and  bookTypeId=#{bookTypeId}
+    </if>
+  </select>
+
+
+
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_bookinfo
+    where BookId = #{bookid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.book_online.demo.model.BookExample" >
+    delete from tb_bookinfo
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.book_online.demo.model.Book" >
+    insert into tb_bookinfo (BookId, BookTypeId, BookName, 
+      BookPress, BookPubDate, BookAuthor, 
+      BookPrice, BookPages, BookOutline, 
+      BookDealmount, BookPic, BookStoremount, 
+      BookStoretime)
+    values (#{bookid,jdbcType=INTEGER}, #{booktypeid,jdbcType=INTEGER}, #{bookname,jdbcType=VARCHAR}, 
+      #{bookpress,jdbcType=VARCHAR}, #{bookpubdate,jdbcType=TIMESTAMP}, #{bookauthor,jdbcType=VARCHAR}, 
+      #{bookprice,jdbcType=DOUBLE}, #{bookpages,jdbcType=INTEGER}, #{bookoutline,jdbcType=VARCHAR}, 
+      #{bookdealmount,jdbcType=INTEGER}, #{bookpic,jdbcType=VARCHAR}, #{bookstoremount,jdbcType=INTEGER}, 
+      #{bookstoretime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.book_online.demo.model.Book" >
+    insert into tb_bookinfo
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="bookid != null" >
+        BookId,
+      </if>
+      <if test="booktypeid != null" >
+        BookTypeId,
+      </if>
+      <if test="bookname != null" >
+        BookName,
+      </if>
+      <if test="bookpress != null" >
+        BookPress,
+      </if>
+      <if test="bookpubdate != null" >
+        BookPubDate,
+      </if>
+      <if test="bookauthor != null" >
+        BookAuthor,
+      </if>
+      <if test="bookprice != null" >
+        BookPrice,
+      </if>
+      <if test="bookpages != null" >
+        BookPages,
+      </if>
+      <if test="bookoutline != null" >
+        BookOutline,
+      </if>
+      <if test="bookdealmount != null" >
+        BookDealmount,
+      </if>
+      <if test="bookpic != null" >
+        BookPic,
+      </if>
+      <if test="bookstoremount != null" >
+        BookStoremount,
+      </if>
+      <if test="bookstoretime != null" >
+        BookStoretime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="bookid != null" >
+        #{bookid,jdbcType=INTEGER},
+      </if>
+      <if test="booktypeid != null" >
+        #{booktypeid,jdbcType=INTEGER},
+      </if>
+      <if test="bookname != null" >
+        #{bookname,jdbcType=VARCHAR},
+      </if>
+      <if test="bookpress != null" >
+        #{bookpress,jdbcType=VARCHAR},
+      </if>
+      <if test="bookpubdate != null" >
+        #{bookpubdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bookauthor != null" >
+        #{bookauthor,jdbcType=VARCHAR},
+      </if>
+      <if test="bookprice != null" >
+        #{bookprice,jdbcType=DOUBLE},
+      </if>
+      <if test="bookpages != null" >
+        #{bookpages,jdbcType=INTEGER},
+      </if>
+      <if test="bookoutline != null" >
+        #{bookoutline,jdbcType=VARCHAR},
+      </if>
+      <if test="bookdealmount != null" >
+        #{bookdealmount,jdbcType=INTEGER},
+      </if>
+      <if test="bookpic != null" >
+        #{bookpic,jdbcType=VARCHAR},
+      </if>
+      <if test="bookstoremount != null" >
+        #{bookstoremount,jdbcType=INTEGER},
+      </if>
+      <if test="bookstoretime != null" >
+        #{bookstoretime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_bookinfo
+    <set >
+      <if test="record.bookid != null" >
+        BookId = #{record.bookid,jdbcType=INTEGER},
+      </if>
+      <if test="record.booktypeid != null" >
+        BookTypeId = #{record.booktypeid,jdbcType=INTEGER},
+      </if>
+      <if test="record.bookname != null" >
+        BookName = #{record.bookname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bookpress != null" >
+        BookPress = #{record.bookpress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bookpubdate != null" >
+        BookPubDate = #{record.bookpubdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.bookauthor != null" >
+        BookAuthor = #{record.bookauthor,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bookprice != null" >
+        BookPrice = #{record.bookprice,jdbcType=DOUBLE},
+      </if>
+      <if test="record.bookpages != null" >
+        BookPages = #{record.bookpages,jdbcType=INTEGER},
+      </if>
+      <if test="record.bookoutline != null" >
+        BookOutline = #{record.bookoutline,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bookdealmount != null" >
+        BookDealmount = #{record.bookdealmount,jdbcType=INTEGER},
+      </if>
+      <if test="record.bookpic != null" >
+        BookPic = #{record.bookpic,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bookstoremount != null" >
+        BookStoremount = #{record.bookstoremount,jdbcType=INTEGER},
+      </if>
+      <if test="record.bookstoretime != null" >
+        BookStoretime = #{record.bookstoretime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_bookinfo
+    set BookId = #{record.bookid,jdbcType=INTEGER},
+      BookTypeId = #{record.booktypeid,jdbcType=INTEGER},
+      BookName = #{record.bookname,jdbcType=VARCHAR},
+      BookPress = #{record.bookpress,jdbcType=VARCHAR},
+      BookPubDate = #{record.bookpubdate,jdbcType=TIMESTAMP},
+      BookAuthor = #{record.bookauthor,jdbcType=VARCHAR},
+      BookPrice = #{record.bookprice,jdbcType=DOUBLE},
+      BookPages = #{record.bookpages,jdbcType=INTEGER},
+      BookOutline = #{record.bookoutline,jdbcType=VARCHAR},
+      BookDealmount = #{record.bookdealmount,jdbcType=INTEGER},
+      BookPic = #{record.bookpic,jdbcType=VARCHAR},
+      BookStoremount = #{record.bookstoremount,jdbcType=INTEGER},
+      BookStoretime = #{record.bookstoretime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.book_online.demo.model.Book" >
+    update tb_bookinfo
+    <set >
+      <if test="booktypeid != null" >
+        BookTypeId = #{booktypeid,jdbcType=INTEGER},
+      </if>
+      <if test="bookname != null" >
+        BookName = #{bookname,jdbcType=VARCHAR},
+      </if>
+      <if test="bookpress != null" >
+        BookPress = #{bookpress,jdbcType=VARCHAR},
+      </if>
+      <if test="bookpubdate != null" >
+        BookPubDate = #{bookpubdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bookauthor != null" >
+        BookAuthor = #{bookauthor,jdbcType=VARCHAR},
+      </if>
+      <if test="bookprice != null" >
+        BookPrice = #{bookprice,jdbcType=DOUBLE},
+      </if>
+      <if test="bookpages != null" >
+        BookPages = #{bookpages,jdbcType=INTEGER},
+      </if>
+      <if test="bookoutline != null" >
+        BookOutline = #{bookoutline,jdbcType=VARCHAR},
+      </if>
+      <if test="bookdealmount != null" >
+        BookDealmount = #{bookdealmount,jdbcType=INTEGER},
+      </if>
+      <if test="bookpic != null" >
+        BookPic = #{bookpic,jdbcType=VARCHAR},
+      </if>
+      <if test="bookstoremount != null" >
+        BookStoremount = #{bookstoremount,jdbcType=INTEGER},
+      </if>
+      <if test="bookstoretime != null" >
+        BookStoretime = #{bookstoretime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where BookId = #{bookid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.book_online.demo.model.Book" >
+    update tb_bookinfo
+    set BookTypeId = #{booktypeid,jdbcType=INTEGER},
+      BookName = #{bookname,jdbcType=VARCHAR},
+      BookPress = #{bookpress,jdbcType=VARCHAR},
+      BookPubDate = #{bookpubdate,jdbcType=TIMESTAMP},
+      BookAuthor = #{bookauthor,jdbcType=VARCHAR},
+      BookPrice = #{bookprice,jdbcType=DOUBLE},
+      BookPages = #{bookpages,jdbcType=INTEGER},
+      BookOutline = #{bookoutline,jdbcType=VARCHAR},
+      BookDealmount = #{bookdealmount,jdbcType=INTEGER},
+      BookPic = #{bookpic,jdbcType=VARCHAR},
+      BookStoremount = #{bookstoremount,jdbcType=INTEGER},
+      BookStoretime = #{bookstoretime,jdbcType=TIMESTAMP}
+    where BookId = #{bookid,jdbcType=INTEGER}
+  </update>
+</mapper>
